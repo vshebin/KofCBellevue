@@ -9,9 +9,20 @@ import SwiftUI
 
 @main
 struct KofCBellevueApp: App {
+    @StateObject private var bannerModel = BannerManagementViewModel(
+        repository: LocalBannerRepository()
+    )
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(bannerModel)
+                .task {
+                    LocalMinutesStorage.refreshBanner(
+                        in: bannerModel
+                    )
+                }
         }
     }
 }
+
