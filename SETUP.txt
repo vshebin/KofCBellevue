@@ -1,0 +1,26 @@
+KofC Bellevue — SwiftUI UI prototype
+
+SETUP
+1. In Xcode create a new iOS App project named KofCBellevue.
+2. Choose SwiftUI for Interface and Swift for Language.
+3. Set the iOS deployment target to iOS 16.0 or later.
+4. Replace the generated ContentView.swift with the supplied ContentView.swift.
+5. Keep the generated KofCBellevueApp.swift file unchanged. Its WindowGroup should show ContentView(). Do not add another @main app declaration.
+6. Select an iPhone simulator and Run (Command-R).
+
+No external packages, image assets, Firebase configuration, or paid services are needed for this UI demo.
+
+FEATURES
+Home with swipeable banners, notification sheet and menu.
+Messages with search, sample groups, and a local message composer.
+Settings with persistent system/light/dark preference.
+Editable local profile.
+
+LIMITATIONS
+This source has not been compiled or run in Xcode in this environment.
+No live login, authorization, messages, push notifications, finances or backend.
+All groups are visible as examples. Production must restrict groups using backend permissions.
+Demo message arrays are local view state, not persisted or delivered.
+Appearance and profile preferences are stored locally using AppStorage.
+No real member data should be entered into this prototype.
+Android implementation is intentionally deferred.
