@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsScreen: View {
     @Binding var appearance: String
-    @AppStorage("demoNotifications") private var notifications = true
+
     var body: some View {
         Form {
             Section("Appearance") {
@@ -19,31 +19,41 @@ struct SettingsScreen: View {
                     Text("Dark").tag("Dark")
                 }
             }
-            Section {
-                Toggle("Updates (demo preference)", isOn: $notifications)
-            } header: { Text("Notifications") } footer: {
-                Text("Saves your preference on this device. Push notifications are not connected.")
-            }
-            Section("Account") {
-                NavigationLink { ProfileScreen() } label: { Label("Profile", systemImage: "person.crop.circle") }
-            }
-            Section("Information") {
-                NavigationLink("About KofC Bellevue") {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text("KofC Bellevue").font(.largeTitle.bold())
-                            Text("A community communication app concept based on your sketches.")
-                            Text("Version 0.1 • UI prototype").foregroundStyle(.secondary)
-                            Text("No real member data, authentication, group permissions, finance, or messaging backend is included.")
-                        }.padding()
-                    }.navigationTitle("About")
-                }
-            }
+
             Section("Notifications") {
                 NavigationLink("Notification preferences") {
                     NotificationSettingsScreen()
                 }
             }
-        }.navigationTitle("Settings")
+
+            Section("Information") {
+                NavigationLink("About KofC Bellevue") {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("KofC Bellevue")
+                                .font(.largeTitle.bold())
+
+                            Text(
+                                "A community communication app for KofC Bellevue."
+                            )
+
+                            Text("Version 0.1 • In development")
+                                .foregroundStyle(.secondary)
+
+                            Text(
+                                """
+                                Features are under development. \
+                                Some screens may display sample \
+                                content or local-only preferences.
+                                """
+                            )
+                        }
+                        .padding()
+                    }
+                    .navigationTitle("About")
+                }
+            }
+        }
+        .navigationTitle("Settings")
     }
 }

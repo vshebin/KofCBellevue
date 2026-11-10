@@ -1,10 +1,13 @@
 import SwiftUI
+import UIKit
 
-// UI prototype only: no authentication, server, or persistent messages.
+// Main signed-in interface: tabs, side menu, and feature sheets.
+@MainActor
 struct ContentView: View {
     @AppStorage("appearance") private var appearance = "System"
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @EnvironmentObject private var bannerModel: BannerManagementViewModel
+    @EnvironmentObject private var session: AuthSession
     @State private var tab = 0
     @State private var showMenu = false
     @State private var showNotifications = false
@@ -111,7 +114,7 @@ struct ContentView: View {
         TabView(selection: $tab) {
             NavigationStack {
                 HomeScreen(openMessages: { tab = 1 })
-                    .navigationTitle("KofC Bellevue")
+                    .navigationTitle("Sacred Heart Knights")
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button { setMenu(true) } label: {
@@ -139,9 +142,21 @@ struct ContentView: View {
                 .tag(2)
 
             NavigationStack { ProfileScreen() }
-                .tabItem { Label("Profile", systemImage: "person.crop.circle.fill") }
+                .tabItem {
+                    Label {
+                        Text("Profile")
+                    } icon: {
+                        if let image = session.profileTabImage {
+                            Image(uiImage: image)
+                                .renderingMode(.original)
+                        } else {
+                            Image(systemName: "person.crop.circle")
+                        }
+                    }
+                }
                 .tag(3)
         }
+        .id(session.profilePhotoVersion)
     }
     
     private var selectedMenuDestination: SideMenuDestination {
@@ -190,6 +205,41 @@ struct ContentView: View {
                 }
             )
         }
+    
+//    private var profileTabImage: UIImage? {
+//        guard let image = session.profileImage,
+//              image.size.width > 0,
+//              image.size.height > 0 else {
+//            return nil
+//        }
+//
+//        let size = CGSize(width: 28, height: 28)
+//
+//        return UIGraphicsImageRenderer(size: size).image { _ in
+//            let bounds = CGRect(origin: .zero, size: size)
+//
+//            UIBezierPath(ovalIn: bounds).addClip()
+//
+//            let scale = max(
+//                size.width / image.size.width,
+//                size.height / image.size.height
+//            )
+//
+//            let drawnSize = CGSize(
+//                width: image.size.width * scale,
+//                height: image.size.height * scale
+//            )
+//
+//            image.draw(
+//                in: CGRect(
+//                    x: (size.width - drawnSize.width) / 2,
+//                    y: (size.height - drawnSize.height) / 2,
+//                    width: drawnSize.width,
+//                    height: drawnSize.height
+//                )
+//            )
+//        }
+//    }
 
     private func setMenu(_ visible: Bool) {
         withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.25)) {
@@ -200,6 +250,7 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(AuthSession())
         .environmentObject(
             BannerManagementViewModel(
                 repository: LocalBannerRepository()

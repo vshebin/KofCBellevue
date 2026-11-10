@@ -15,21 +15,13 @@ struct HomeScreen: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                Text("Your council, connected.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                
                 HomeBannerCarousel(
                     banners: bannerModel.visibleBanners,
                     interval: 5
                 )
                 
                 messagesSection
-                
-                Label(
-                    "Prototype with sample content",
-                    systemImage: "info.circle"
-                )
+        
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             }
@@ -81,7 +73,7 @@ private struct HomeBannerPreviewHost: View {
 #Preview("Home — Banners") {
     NavigationStack {
         HomeScreen(openMessages: {})
-            .navigationTitle("KofC Bellevue")
+            .navigationTitle("Sacred Heart Knights")
     }
     .environmentObject(
         BannerManagementViewModel(
